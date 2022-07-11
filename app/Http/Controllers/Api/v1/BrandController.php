@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\brand\BrandResource;
+use App\Http\Resources\v1\category\CategoryResource;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -14,7 +15,7 @@ class BrandController extends ApiController
 
     public function index()
     {
-        $brands = Brand::select(['name','display_name'])->paginate(2);
+        $brands = Brand::select(['name','display_name'])->paginate(15);
         return $this::successResponse(200,[
             'brands'=>BrandResource::collection($brands),
             'links'=> BrandResource::collection($brands)->response()->getData()->links,
@@ -39,7 +40,7 @@ class BrandController extends ApiController
             'display_name'=>$request->display_name
         ]);
 
-        return $this::successResponse(201,$brand);
+        return $this::successResponse(201,new CategoryResource($brand));
     }
 
 
@@ -54,7 +55,7 @@ class BrandController extends ApiController
     {
         $validator = Validator::make($request->all(),[
             'name'=>'required',
-            'display_name'=>['required',Rule::unique('brands','display_name')->ignore($brand->id)]
+            'display_name'=>['required',Rule::unique('brands')->ignore($brand->id)],
         ]);
 
         if ($validator->fails()){

@@ -22,4 +22,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix'=>'/v1/admin'], function(){
     Route::apiResource('/brands',\App\Http\Controllers\Api\v1\BrandController::class);
+    Route::apiResource('/categories',\App\Http\Controllers\Api\v1\CategoryController::class);
+    Route::get('/category/{category}/subcategory',[\App\Http\Controllers\Api\v1\CategoryController::class,'subcategory']);
 });
