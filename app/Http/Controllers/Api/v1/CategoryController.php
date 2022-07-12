@@ -92,7 +92,7 @@ class CategoryController extends ApiController
     }
 
     public function subcategory(Category $category){
-        //jsut show the subcategories
+        //just show the subcategories
 //        $subcategory = Category::where('parent_id',$category->id)->get();
 //        return $this::successResponse(200,new CategoryCollection($subcategory));
 
