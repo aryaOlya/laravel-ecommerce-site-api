@@ -15,7 +15,12 @@ class ProductController extends ApiController
 
     public function index()
     {
-
+        $products = Product::paginate(3);
+        return $this::successResponse(200,[
+            'products'=>ProductResource::collection($products->load('images')),
+            'links'=> ProductResource::collection($products)->response()->getData()->links,
+            'meta'=> ProductResource::collection($products)->response()->getData()->meta,
+        ]);
     }
 
 
@@ -77,7 +82,8 @@ class ProductController extends ApiController
 
     public function show($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return $this::successResponse(200,new ProductResource($product->load('images')));
     }
 
 
