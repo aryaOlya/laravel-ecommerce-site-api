@@ -73,8 +73,11 @@ class BrandController extends ApiController
 
     public function destroy(Brand $brand)
     {
-
         $brand->delete();
         return $this::successResponse(200,new BrandResource($brand));
+    }
+
+    public function products(Brand $brand){
+        return $this::successResponse(200,new BrandResource($brand->load('products')));
     }
 }

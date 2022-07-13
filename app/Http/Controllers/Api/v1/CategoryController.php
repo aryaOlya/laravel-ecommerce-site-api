@@ -97,7 +97,7 @@ class CategoryController extends ApiController
 //        return $this::successResponse(200,new CategoryCollection($subcategory));
 
         //show the parent & categories both with relations
-        return $this::successResponse(200,new BrandResource($category->load('subcategories')));
+        return $this::successResponse(200,new CategoryResource($category->load('subcategories')));
 
     }
 }

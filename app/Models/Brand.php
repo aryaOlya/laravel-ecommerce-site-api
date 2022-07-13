@@ -11,4 +11,7 @@ class Brand extends Model
     use HasFactory,SoftDeletes;
     protected $table = 'Brands';
     protected $guarded = ['id'];
+    public function products(){
+        return $this->hasMany(Product::class);
+    }
 }
