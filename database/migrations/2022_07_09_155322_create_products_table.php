@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->on('categories')->references('id')->onDelete('cascade');
             $table->string('primary_image');
-            $table->text('description');
+            $table->text('description');//it should be nullable
             $table->unsignedInteger('price')->default(0);
             $table->unsignedInteger('quantity')->default(0);
             $table->unsignedInteger('delivery_amount')->default(0);

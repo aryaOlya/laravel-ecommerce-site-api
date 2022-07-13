@@ -11,4 +11,7 @@ class ProductImage extends Model
     use HasFactory,SoftDeletes;
     protected $table = 'product_images';
     protected $guarded = ['id'];
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
 }
