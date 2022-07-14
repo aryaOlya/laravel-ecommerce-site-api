@@ -20,9 +20,9 @@ class CategoryController extends ApiController
     {
         $categories = Category::paginate(3);
         return $this::successResponse(200,[
-            'brands'=>BrandResource::collection($categories),
-            'links'=> BrandResource::collection($categories)->response()->getData()->links,
-            'meta'=> BrandResource::collection($categories)->response()->getData()->meta,
+            'brands'=>CategoryResource::collection($categories),
+            'links'=> CategoryResource::collection($categories)->response()->getData()->links,
+            'meta'=> CategoryResource::collection($categories)->response()->getData()->meta,
         ]);
     }
 
@@ -52,7 +52,7 @@ class CategoryController extends ApiController
     public function show($id)
     {
         $category = Category::findOrFail($id);
-        return $this::successResponse(200,new BrandResource($category));
+        return $this::successResponse(200,new CategoryResource($category));
     }
 
 
@@ -99,5 +99,9 @@ class CategoryController extends ApiController
         //show the parent & categories both with relations
         return $this::successResponse(200,new CategoryResource($category->load('subcategories')));
 
+    }
+
+    public function products(Category $category){
+        return $this::successResponse(200,new CategoryResource($category->load('products')));
     }
 }

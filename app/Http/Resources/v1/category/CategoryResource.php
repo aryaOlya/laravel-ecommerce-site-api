@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\v1\category;
 
+use App\Http\Resources\v1\product\ProductCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryResource extends JsonResource
@@ -16,14 +17,17 @@ class CategoryResource extends JsonResource
     {
         //return parent::toArray($request);
         return [
-            'id'=>$request->id,
-            'parent_id'=>$request->parent_id,
-            'name'=>$request->name,
-            'description'=>$request->description,
-            'created_at'=>$request->created_at,
-            'updated_at'=>$request->updated_at,
-            'deleted_at'=>$request->deleted_at,
-            'subcategories'=>new CategoryCollection($this->whenLoaded('subcategories'))
+            'id'=>$this->id,
+            'parent_id'=>$this->parent_id,
+            'name'=>$this->name,
+            'description'=>$this->description,
+            'created_at'=>$this->created_at,
+            'updated_at'=>$this->updated_at,
+            'deleted_at'=>$this->deleted_at,
+            'subcategories'=>new CategoryCollection($this->whenLoaded('subcategories')),
+            'products'=>new ProductCollection($this->whenLoaded('products',function(){
+                return $this->products->load('images');
+            }))
         ];
     }
 }

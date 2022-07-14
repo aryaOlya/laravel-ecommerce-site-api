@@ -25,7 +25,8 @@ Route::group(['prefix'=>'/v1/admin'], function(){
     Route::get('/brands/{brand}/products',[\App\Http\Controllers\Api\v1\BrandController::class,'products']);
 
     Route::apiResource('/categories',\App\Http\Controllers\Api\v1\CategoryController::class);
-    Route::get('/category/{category}/subcategory',[\App\Http\Controllers\Api\v1\CategoryController::class,'subcategory']);
+    Route::get('/categories/{category}/subcategories',[\App\Http\Controllers\Api\v1\CategoryController::class,'subcategory']);
+    Route::get('/categories/{category}/products',[\App\Http\Controllers\Api\v1\CategoryController::class,'products']);
 
     Route::apiResource('/products',\App\Http\Controllers\Api\v1\ProductController::class);
 });
