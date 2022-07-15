@@ -33,6 +33,8 @@ Route::group(['prefix'=>'/v1/admin'], function(){
     //Product roots
     Route::apiResource('/products',\App\Http\Controllers\Api\v1\ProductController::class);
 
-    //Payment roots
-    Route::post('/payment/send',[\App\Http\Controllers\PaymentController::class,'sendInfoToGateway']);
 });
+
+
+//Payment roots
+Route::post('/payment/send',[\App\Http\Controllers\PaymentController::class,'sendInfoToGateway']);

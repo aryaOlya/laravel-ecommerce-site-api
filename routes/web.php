@@ -19,5 +19,5 @@ Route::get('/', function () {
 });
 
 Route::get('/payment/verify',function(Request $request){
-    dd($request);
+    dd($request->all());
 });
