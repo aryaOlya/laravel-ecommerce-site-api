@@ -21,12 +21,18 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['prefix'=>'/v1/admin'], function(){
+    //Brand roots
     Route::apiResource('/brands',\App\Http\Controllers\Api\v1\BrandController::class);
     Route::get('/brands/{brand}/products',[\App\Http\Controllers\Api\v1\BrandController::class,'products']);
 
+    //Category roots
     Route::apiResource('/categories',\App\Http\Controllers\Api\v1\CategoryController::class);
     Route::get('/categories/{category}/subcategories',[\App\Http\Controllers\Api\v1\CategoryController::class,'subcategory']);
     Route::get('/categories/{category}/products',[\App\Http\Controllers\Api\v1\CategoryController::class,'products']);
 
+    //Product roots
     Route::apiResource('/products',\App\Http\Controllers\Api\v1\ProductController::class);
+
+    //Payment roots
+    Route::post('/payment/send',[\App\Http\Controllers\PaymentController::class,'sendInfoToGateway']);
 });
