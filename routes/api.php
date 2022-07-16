@@ -38,3 +38,4 @@ Route::group(['prefix'=>'/v1/admin'], function(){
 
 //Payment roots
 Route::post('/payment/send',[\App\Http\Controllers\PaymentController::class,'sendInfoToGateway']);
+Route::post('/payment/verify',[\App\Http\Controllers\PaymentController::class,'verifyTrans']);

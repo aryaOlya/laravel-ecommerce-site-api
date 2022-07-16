@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use \Illuminate\Http\Request;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +20,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//php artisan serve can not handle sending a request from web route to api route,so use server or localhost like XAMPP and make needed changes in htdocs/yourProject/routes/web.php
 Route::get('/payment/verify',function(Request $request){
-    dd($request->all());
+    $response = Http::post('http://localhost:7878/api/payment/verify',[
+        'token'=>$request->token,
+    ]);
+    dd($response->body());
 });

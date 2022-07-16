@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\v1\ApiController;
+use http\Client\Response;
 use Illuminate\Http\Request;
 
 class PaymentController extends ApiController
@@ -13,7 +14,8 @@ class PaymentController extends ApiController
         $mobile = "شماره موبایل";
         $factorNumber = "شماره فاکتور";
         $description = "توضیحات";
-        $redirect = 'http://localhost:7878/payment/verify';
+        //cause php artisan serve can not handle request from web routes to api routes and need server to handle this we use XAMPP
+        $redirect = 'http://localhost/laravelEcommerceSiteApi/public/payment/verify';
         $result = $this->send($api, $amount, $redirect, $mobile, $factorNumber, $description);
         $result = json_decode($result);
         if($result->status) {
@@ -22,6 +24,32 @@ class PaymentController extends ApiController
         } else {
             return $this::errorResponse(422,'error has been occurred during connecting to gateway ');
         }
+    }
+
+    public function verifyTrans(Request $request){
+        $api = 'test';
+        $token = $request->token;
+        $result = json_decode($this->verify($api,$token));
+        //return response()->json($result);
+        return $result;
+        if(isset($result->status)){
+            if($result->status == 1){
+                echo "<h1>تراکنش با موفقیت انجام شد</h1>";
+            } else {
+                echo "<h1>تراکنش با خطا مواجه شد</h1>";
+            }
+        } else {
+            if($_GET['status'] == 0){
+                echo "<h1>تراکنش با خطا مواجه شد</h1>";
+            }
+        }
+    }
+
+    function verify($api, $token) {
+        return $this->curl_post('https://pay.ir/pg/verify', [
+            'api' 	=> $api,
+            'token' => $token,
+        ]);
     }
 
     public function send($api, $amount, $redirect, $mobile = null, $factorNumber = null, $description = null) {
