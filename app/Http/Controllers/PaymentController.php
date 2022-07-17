@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Api\v1\ApiController;
 use App\Http\Controllers\Api\v1\OrderController;
 use App\Models\Product;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -71,16 +72,20 @@ class PaymentController extends ApiController
         $token = $request->token;
         $result = json_decode($this->verify($api,$token));
         //return response()->json($result);
-        return $result;
+        //return $result;
         if(isset($result->status)){
             if($result->status == 1){
-                echo "<h1>تراکنش با موفقیت انجام شد</h1>";
+                if(Transaction::where('trans_id' , $result->transId)->exists()){
+                    return $this->errorResponse('این تراکنش قبلا توی سیستم ثبت شده است' , 422);
+                }
+                OrderController::update($token, $result->transId);
+                return $this->successResponse(200, null,'تراکنش با موفقیت انجام شد' );
             } else {
-                echo "<h1>تراکنش با خطا مواجه شد</h1>";
+                echo $this::errorResponse(422,'تراکنش با خطا مواجه شد');
             }
         } else {
-            if($_GET['status'] == 0){
-                echo "<h1>تراکنش با خطا مواجه شد</h1>";
+            if ($request->status == 0) {
+                return $this->errorResponse(422 ,'تراکنش با خطا مواجه شد' );
             }
         }
     }

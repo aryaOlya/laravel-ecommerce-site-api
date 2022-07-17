@@ -48,4 +48,39 @@ class OrderController extends ApiController
             return ApiController::errorResponse(422,$e->getMessage());
         }
     }
+
+    public static function update($token, $transId)
+    {
+        try {
+            DB::beginTransaction();
+
+            $transaction = Transaction::where('token', $token)->firstOrFail();
+
+            $transaction->update([
+                'status' => 1,
+                'trans_id' => $transId
+            ]);
+
+            $order = Order::findOrFail($transaction->order_id);
+
+            $order->update([
+                'status' => 1,
+                'payment_status' => 1
+            ]);
+
+            foreach(OrderItem::where('order_id' , $order->id)->get() as $item){
+                $product = Product::find($item->product_id);
+                $product->update([
+                    'quantity' => ($product->quantity -  $item->quantity)
+                ]);
+            }
+
+            DB::commit();
+        }catch (\Exception $e){
+            DB::rollBack();
+            return ApiController::errorResponse(422,$e->getMessage());
+        }
+    }
+
+
 }
