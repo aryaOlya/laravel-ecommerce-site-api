@@ -3,14 +3,53 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Api\v1\ApiController;
-use http\Client\Response;
+use App\Http\Controllers\Api\v1\OrderController;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PaymentController extends ApiController
 {
-    public function sendInfoToGateway(){
+    public function sendInfoToGateway(Request $request)
+    {
+        //echo gettype($request);
+        //return $request;
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'order_items' => 'required',
+            'order_items.*.product_id' => 'required|integer',
+            'order_items.*.quantity' => 'required|integer',
+            'request_from' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return $this::errorResponse(422,$validator->messages());
+        }
+
+        $totalAmount = 0;
+        $deliveryAmount = 0;
+        foreach ($request->order_items as $orderItem) {
+//            echo gettype($orderItem['product_id']);
+//            echo "----";
+            //return $orderItem->product_id;
+            $product = Product::findOrFail($orderItem['product_id']);
+            if ($product->quantity < $orderItem['quantity']) {
+                return $this::errorResponse(422,'مقدار وارد شده بیشتر از حد مجاز میباشد');
+            }
+            $totalAmount += $product->price * $orderItem['quantity'];
+            $deliveryAmount += $product->delivery_amount;
+        }
+
+        $payingAmount = $totalAmount + $deliveryAmount;
+
+        $amounts = [
+            'totalAmount' => $totalAmount,
+            'deliveryAmount' => $deliveryAmount,
+            'payingAmount' => $payingAmount,
+        ];
+
+
         $api = 'test';
-        $amount = 100000;
+        $amount = $payingAmount;
         $mobile = "شماره موبایل";
         $factorNumber = "شماره فاکتور";
         $description = "توضیحات";
@@ -19,10 +58,11 @@ class PaymentController extends ApiController
         $result = $this->send($api, $amount, $redirect, $mobile, $factorNumber, $description);
         $result = json_decode($result);
         if($result->status) {
+            OrderController::create($request, $amounts, $result->token);
             $go = "https://pay.ir/pg/$result->token";
             return $this::successResponse(200,['url'=>$go]);
         } else {
-            return $this::errorResponse(422,'error has been occurred during connecting to gateway ');
+            return $this::errorResponse(422,$result->errorMessage);
         }
     }
 

@@ -26,6 +26,7 @@ class BrandController extends ApiController
 
     public function store(Request $request)
     {
+        //return $request;
         $validator = Validator::make($request->all(),[
             'name'=>'required',
             'display_name'=>'required|unique:brands,display_name'
