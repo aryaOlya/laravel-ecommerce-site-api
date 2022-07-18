@@ -57,4 +57,9 @@ class AuthController extends ApiController
 
         return $this::successResponse(201,['user'=>$user,'token'=>$token],);
     }
+
+    public function logout(){
+        auth()->user()->tokens()->delete();
+        return $this::successResponse(200,null,'logout');
+    }
 }

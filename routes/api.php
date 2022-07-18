@@ -21,9 +21,10 @@ use Illuminate\Support\Facades\Route;
 //Auth routes
 Route::post('/v1/register',[\App\Http\Controllers\Api\v1\AuthController::class,'register']);
 Route::post('/v1/login',[\App\Http\Controllers\Api\v1\AuthController::class,'login']);
+Route::post('v1/logout',[\App\Http\Controllers\Api\v1\AuthController::class,'logout'])->middleware('auth:sanctum');
 
 
-Route::group(['prefix'=>'/v1/admin'], function(){
+Route::group(['prefix'=>'/v1/admin','middleware' => ['auth:sanctum']], function(){
     //Brand routes
     Route::apiResource('/brands',\App\Http\Controllers\Api\v1\BrandController::class);
     Route::get('/brands/{brand}/products',[\App\Http\Controllers\Api\v1\BrandController::class,'products']);
