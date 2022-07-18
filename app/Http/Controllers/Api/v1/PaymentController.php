@@ -1,11 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Api\v1\ApiController;
-use App\Http\Controllers\Api\v1\OrderController;
-use App\Models\Product;
-use App\Models\Transaction;
+use App\Models\Api\v1\Product;
+use App\Models\Api\v1\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 

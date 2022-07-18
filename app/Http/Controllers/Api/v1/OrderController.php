@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Models\Product;
-use App\Models\Transaction;
+use App\Models\Api\v1\Order;
+use App\Models\Api\v1\OrderItem;
+use App\Models\Api\v1\Product;
+use App\Models\Api\v1\Transaction;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends ApiController

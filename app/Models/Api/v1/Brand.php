@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Api\v1;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class OrderItem extends Model
+class Brand extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $table = 'order_items';
+    protected $table = 'Brands';
     protected $guarded = ['id'];
+    public function products(){
+        return $this->hasMany(Product::class);
+    }
 }

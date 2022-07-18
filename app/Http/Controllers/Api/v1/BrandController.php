@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\brand\BrandResource;
 use App\Http\Resources\v1\category\CategoryResource;
-use App\Models\Brand;
+use App\Models\Api\v1\Brand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;

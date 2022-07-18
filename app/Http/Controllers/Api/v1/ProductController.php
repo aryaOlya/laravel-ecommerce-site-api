@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\v1\product\ProductResource;
-use App\Models\Product;
-use App\Models\ProductImage;
+use App\Models\Api\v1\Product;
+use App\Models\Api\v1\ProductImage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

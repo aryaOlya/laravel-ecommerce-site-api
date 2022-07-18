@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,23 +18,27 @@ use Illuminate\Support\Facades\Route;
 //});
 
 
+//Auth routes
+Route::post('/v1/register',[\App\Http\Controllers\Api\v1\AuthController::class,'register']);
+Route::post('/v1/login',[\App\Http\Controllers\Api\v1\AuthController::class,'login']);
+
 
 Route::group(['prefix'=>'/v1/admin'], function(){
-    //Brand roots
+    //Brand routes
     Route::apiResource('/brands',\App\Http\Controllers\Api\v1\BrandController::class);
     Route::get('/brands/{brand}/products',[\App\Http\Controllers\Api\v1\BrandController::class,'products']);
 
-    //Category roots
+    //Category routes
     Route::apiResource('/categories',\App\Http\Controllers\Api\v1\CategoryController::class);
     Route::get('/categories/{category}/subcategories',[\App\Http\Controllers\Api\v1\CategoryController::class,'subcategory']);
     Route::get('/categories/{category}/products',[\App\Http\Controllers\Api\v1\CategoryController::class,'products']);
 
-    //Product roots
+    //Product routes
     Route::apiResource('/products',\App\Http\Controllers\Api\v1\ProductController::class);
 
 });
 
 
-//Payment roots
-Route::post('/payment/send',[\App\Http\Controllers\PaymentController::class,'sendInfoToGateway']);
-Route::post('/payment/verify',[\App\Http\Controllers\PaymentController::class,'verifyTrans']);
+//Payment routes
+Route::post('/payment/send',[\App\Http\Controllers\Api\v1\PaymentController::class,'sendInfoToGateway']);
+Route::post('/payment/verify',[\App\Http\Controllers\Api\v1\PaymentController::class,'verifyTrans']);

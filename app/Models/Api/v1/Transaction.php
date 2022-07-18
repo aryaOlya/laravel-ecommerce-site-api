@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Api\v1;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductImage extends Model
+class Transaction extends Model
 {
     use HasFactory,SoftDeletes;
-    protected $table = 'product_images';
+    protected $table = 'transactions';
     protected $guarded = ['id'];
-    public function product(){
-        return $this->belongsTo(Product::class);
-    }
 }
