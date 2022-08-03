@@ -3,7 +3,11 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Throwable;
+use App\Http\Controllers\Api\v1\ApiController;
 
 class Handler extends ExceptionHandler
 {
@@ -43,8 +47,26 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+//        $this->reportable(function (Throwable $e) {
+//
+//        });
+
+        $this->renderable(function (NotFoundHttpException $e,$request){
+            if ($request->is('api/*')){
+                return ApiController::errorResponse(404,'page not found');
+            }
+        });
+
+        $this->renderable(function (AccessDeniedHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return ApiController::errorResponse('403','access denied');
+            }
+        });
+
+        $this->renderable(function (ServiceUnavailableHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return ApiController::errorResponse('503','server side problem');
+            }
         });
     }
 }
