@@ -19,13 +19,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('address');
-            $table->string('mobile');
-            $table->string('postal_code');
-            $table->unsignedBigInteger('province_id');
-            $table->foreign('province_id')->on('provinces')->references('id')->onDelete('cascade');
-            $table->unsignedBigInteger('city_id');
-            $table->foreign('city_id')->on('cities')->references('id')->onDelete('cascade');
+            $table->string('address')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->unsignedBigInteger('province_id')->nullable();
+            $table->unsignedBigInteger('city_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

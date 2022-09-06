@@ -17,9 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('brand_id');
-            $table->foreign('brand_id')->on('brands')->references('id')->onDelete('cascade');
             $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->on('categories')->references('id')->onDelete('cascade');
             $table->string('primary_image');
             $table->text('description');//it should be nullable
             $table->unsignedInteger('price')->default(0);

@@ -16,9 +16,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->on('users')->references('id')->onDelete('cascade');
             $table->unsignedBigInteger('order_id');
-            $table->foreign('order_id')->on('orders')->references('id')->onDelete('cascade');
             $table->unsignedInteger('amount');
             $table->string('token')->nullable(true);
             $table->string('trans_id')->nullable(true);
